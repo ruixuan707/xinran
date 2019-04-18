@@ -121,6 +121,7 @@ public class RoomInfoController {
         if (roomInfo.getUser() != null) {
             roomInfoPage.setUserName(roomInfo.getUser().getRealName());
             roomInfoPage.setUserId(roomInfo.getUser().getId());
+            roomInfoPage.setUserPic(roomInfo.getUser().getPic());
         }
     }
 

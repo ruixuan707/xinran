@@ -102,4 +102,16 @@ public class RoomInfoPage extends BasePage {
      * 交通情况
      */
     private String traffic;
+
+    /**
+     * 查询条件 价格
+     */
+
+    private BigDecimal topPrice;
+    private BigDecimal bottomPrice;
+
+    /**
+     * 房东头像
+     */
+    private String userPic;
 }

@@ -5,6 +5,7 @@ import com.monco.core.dao.RoomInfoDao;
 import com.monco.core.entity.RoomInfo;
 import com.monco.core.page.RoomInfoPage;
 import com.monco.core.service.RoomInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +36,44 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
         Page<RoomInfo> result = roomInfoDao.findAll(new Specification<RoomInfo>() {
             @Override
             public Predicate toPredicate(Root<RoomInfo> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicateList = new ArrayList<>();
                 // 自动加载查询条件
-                if (roomInfoPage.getHoldSize() != null) {
+                List<Predicate> predicateList = new ArrayList<>();
+                // 价格小于最大值
+                if (roomInfoPage.getTopPrice() != null) {
+                    predicateList.add(criteriaBuilder.lessThanOrEqualTo(
+                            root.get("price").as(BigDecimal.class),
+                            roomInfoPage.getTopPrice()));
+                }
+                // 价格大于最小值
+                if (roomInfoPage.getBottomPrice() != null) {
+                    predicateList.add(criteriaBuilder.greaterThanOrEqualTo(
+                            root.get("price").as(BigDecimal.class),
+                            roomInfoPage.getBottomPrice()));
+                }
+                // 出租类型
+                if (roomInfoPage.getRentType() != null) {
                     predicateList.add(criteriaBuilder.equal(
+                            root.get("rentType").as(Integer.class),
+                            roomInfoPage.getRentType()));
+                }
+                // 宜居人数
+                if (roomInfoPage.getHoldSize() != null) {
+                    predicateList.add(criteriaBuilder.greaterThanOrEqualTo(
                             root.get("holdSize").as(Integer.class),
                             roomInfoPage.getHoldSize()));
                 }
+                // 城市
+                if (StringUtils.isNotBlank(roomInfoPage.getCity())) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("city").as(String.class),
+                            roomInfoPage.getCity()));
+                }
+                /*// 户型
+                if (StringUtils.isNotBlank(roomInfoPage.getCity())) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("city").as(String.class),
+                            roomInfoPage.getCity()));
+                }*/
                 // 绑定登录用户
                 if (roomInfoPage.getUserId() != null) {
                     predicateList.add(criteriaBuilder.equal(

@@ -12,6 +12,13 @@ import org.springframework.data.domain.Pageable;
  */
 public interface RoomInfoService extends BaseService<RoomInfo, Long> {
 
+    /**
+     * 房源分页查询
+     *
+     * @param pageable
+     * @param roomInfoPage
+     * @return
+     */
     Page<RoomInfo> getRoomInfoList(Pageable pageable, RoomInfoPage roomInfoPage);
 
 }

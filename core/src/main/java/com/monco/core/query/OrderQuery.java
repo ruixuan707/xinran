@@ -16,7 +16,9 @@ import java.io.Serializable;
  */
 @Data
 public class OrderQuery implements Serializable {
+
     private static final long serialVersionUID = 2492447214174358772L;
+
     private String orderField = "id";
     private String orderType;
 

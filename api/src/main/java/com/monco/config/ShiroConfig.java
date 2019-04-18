@@ -46,10 +46,19 @@ public class ShiroConfig {
         factoryBean.setFilters(filterMap);
         factoryBean.setSecurityManager(defaultWebSecurityManager);
         Map<String, String> filterRuleMap = new HashMap<>();
+        /* 登录接口 **/
         filterRuleMap.put("/login", "anon");
+        /* 下载 **/
         filterRuleMap.put("/download", "anon");
+        /* 连接池 **/
         filterRuleMap.put("/druid/**", "anon");
+        /* 注册 **/
         filterRuleMap.put("/user/register**", "anon");
+        /* 所有房源信息 **/
+        filterRuleMap.put("/room-info/list", "anon");
+        /* fastDFS上传 **/
+        filterRuleMap.put("/file/uplfmdFileToFastList", "anon");
+        /* swagger **/
         filterRuleMap.put("/swagger-ui.html", "anon");
         filterRuleMap.put("/webjars/**", "anon");
         filterRuleMap.put("/v2/**", "anon");
