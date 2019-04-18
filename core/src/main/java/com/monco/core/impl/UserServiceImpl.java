@@ -35,7 +35,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
                 predicateList.add(criteriaBuilder.equal(
-                        root.get("dataDelete").as(Integer.class), 0));
+                        root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];
                 criteriaQuery.where(predicateList.toArray(predicates));
                 return criteriaQuery.getRestriction();

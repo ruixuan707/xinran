@@ -1,5 +1,6 @@
 package com.monco.core.impl;
 
+import com.monco.common.bean.ConstantUtils;
 import com.monco.core.dao.HomeInfoDao;
 import com.monco.core.entity.HomeInfo;
 import com.monco.core.page.HomeInfoPage;
@@ -35,7 +36,7 @@ public class HomeInfoServiceImpl extends BaseServiceImpl<HomeInfo, Long> impleme
             public Predicate toPredicate(Root<HomeInfo> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
                 predicateList.add(criteriaBuilder.equal(
-                        root.get("dataDelete").as(Integer.class), 0));
+                        root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];
                 criteriaQuery.where(predicateList.toArray(predicates));
                 return criteriaQuery.getRestriction();

@@ -4,6 +4,7 @@ import com.monco.common.bean.ApiResult;
 import com.monco.common.bean.ConstantUtils;
 import com.monco.core.entity.HomeInfo;
 import com.monco.core.entity.RoomInfo;
+import com.monco.core.entity.User;
 import com.monco.core.manager.UserManager;
 import com.monco.core.page.HomeInfoPage;
 import com.monco.core.page.PageResult;
@@ -77,6 +78,26 @@ public class RoomInfoController {
     public ApiResult list(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                           @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                           RoomInfoPage roomInfoPage, OrderQuery orderQuery) {
+        Page<RoomInfo> result = roomInfoService.getRoomInfoList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomInfoPage);
+        List<RoomInfo> roomInfoList = result.getContent();
+        List<RoomInfoPage> roomInfoPageList = new ArrayList<>();
+        for (RoomInfo roomInfo : roomInfoList) {
+            RoomInfoPage page = new RoomInfoPage();
+            entityToPage(roomInfo, page);
+            roomInfoPageList.add(page);
+        }
+        PageResult pageResult = new PageResult(result.getPageable(), roomInfoPageList, result.getTotalElements());
+        return ApiResult.ok(pageResult);
+    }
+
+    @GetMapping("user-list")
+    public ApiResult userList(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
+                              @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+                              RoomInfoPage roomInfoPage, OrderQuery orderQuery) {
+        User user = UserManager.get();
+        if (user != null) {
+            roomInfoPage.setUserId(user.getId());
+        }
         Page<RoomInfo> result = roomInfoService.getRoomInfoList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomInfoPage);
         List<RoomInfo> roomInfoList = result.getContent();
         List<RoomInfoPage> roomInfoPageList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.monco.core.impl;
 
+import com.monco.common.bean.ConstantUtils;
 import com.monco.core.dao.RoomOrderDao;
 import com.monco.core.entity.RoomOrder;
 import com.monco.core.page.RoomOrderPage;
@@ -36,7 +37,7 @@ public class RoomOrderServiceImpl extends BaseServiceImpl<RoomOrder, Long> imple
             public Predicate toPredicate(Root<RoomOrder> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
                 predicateList.add(criteriaBuilder.equal(
-                        root.get("dataDelete").as(Integer.class), 0));
+                        root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];
                 criteriaQuery.where(predicateList.toArray(predicates));
                 return criteriaQuery.getRestriction();

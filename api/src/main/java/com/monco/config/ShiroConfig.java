@@ -50,7 +50,10 @@ public class ShiroConfig {
         filterRuleMap.put("/download", "anon");
         filterRuleMap.put("/druid/**", "anon");
         filterRuleMap.put("/user/register**", "anon");
-        filterRuleMap.put("/swagger-ui/**", "anon");
+        filterRuleMap.put("/swagger-ui.html", "anon");
+        filterRuleMap.put("/webjars/**", "anon");
+        filterRuleMap.put("/v2/**", "anon");
+        filterRuleMap.put("/swagger-resources/**", "anon");
         filterRuleMap.put("/**", "jwtToken");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;

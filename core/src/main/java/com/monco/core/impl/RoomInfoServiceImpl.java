@@ -1,5 +1,6 @@
 package com.monco.core.impl;
 
+import com.monco.common.bean.ConstantUtils;
 import com.monco.core.dao.RoomInfoDao;
 import com.monco.core.entity.RoomInfo;
 import com.monco.core.page.RoomInfoPage;
@@ -40,8 +41,14 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
                             root.get("holdSize").as(Integer.class),
                             roomInfoPage.getHoldSize()));
                 }
+                // 绑定登录用户
+                if (roomInfoPage.getUserId() != null) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("user").get("id").as(Long.class),
+                            roomInfoPage.getUserId()));
+                }
                 predicateList.add(criteriaBuilder.equal(
-                        root.get("dataDelete").as(Integer.class), 0));
+                        root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];
                 criteriaQuery.where(predicateList.toArray(predicates));
                 return criteriaQuery.getRestriction();

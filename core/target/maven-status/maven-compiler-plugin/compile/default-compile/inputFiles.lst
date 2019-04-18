@@ -16,6 +16,7 @@ E:\monco-space\homestay\core\src\main\java\com\monco\core\page\OrderEvaluatePage
 E:\monco-space\homestay\core\src\main\java\com\monco\core\entity\BaseEntity.java
 E:\monco-space\homestay\core\src\main\java\com\monco\core\impl\HomeInfoServiceImpl.java
 E:\monco-space\homestay\core\src\main\java\com\monco\core\entity\RoomInfo.java
+E:\monco-space\homestay\core\src\main\java\com\monco\core\manager\UserManager.java
 E:\monco-space\homestay\core\src\main\java\com\monco\core\dao\HomeInfoDao.java
 E:\monco-space\homestay\core\src\main\java\com\monco\core\entity\OrderInfo.java
 E:\monco-space\homestay\core\src\main\java\com\monco\core\entity\User.java
