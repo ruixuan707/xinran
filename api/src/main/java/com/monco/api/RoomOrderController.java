@@ -1,8 +1,12 @@
 package com.monco.api;
 
 import com.monco.common.bean.ApiResult;
+import com.monco.common.bean.ConstantUtils;
+import com.monco.common.bean.RandomUtils;
+import com.monco.core.entity.RoomInfo;
 import com.monco.core.entity.RoomOrder;
 import com.monco.core.entity.User;
+import com.monco.core.manager.UserManager;
 import com.monco.core.page.PageResult;
 import com.monco.core.page.RoomInfoPage;
 import com.monco.core.page.RoomOrderPage;
@@ -20,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +51,11 @@ public class RoomOrderController {
     public ApiResult save(@RequestBody RoomOrderPage roomOrderPage) {
         RoomOrder roomOrder = new RoomOrder();
         pageToEntity(roomOrderPage, roomOrder);
+        // 随机码
+        roomOrder.setOrderCode(RandomUtils.createData(15));
+        roomOrder.setUser(UserManager.get());
+        roomOrder.setCostStatus(ConstantUtils.NUM_0);
+        roomOrder.setOrderStatus(ConstantUtils.NUM_1);
         roomOrderService.save(roomOrder);
         return ApiResult.ok();
     }
@@ -101,9 +111,6 @@ public class RoomOrderController {
         BeanUtils.copyProperties(roomOrderPage, roomOrder);
         if (roomOrderPage.getRoomInfoId() != null) {
             roomOrder.setRoomInfo(roomInfoService.find(roomOrderPage.getRoomInfoId()));
-        }
-        if (roomOrderPage.getUserId() != null) {
-            roomOrder.setUser(userService.find(roomOrderPage.getUserId()));
         }
         if (ArrayUtils.isNotEmpty(roomOrderPage.getUserListId())) {
             List<User> userList = userService.findByIds(roomOrderPage.getUserListId());
