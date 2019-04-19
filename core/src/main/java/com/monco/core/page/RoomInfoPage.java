@@ -4,6 +4,7 @@ import com.monco.core.entity.HomeInfo;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @Auther: monco
@@ -84,6 +85,11 @@ public class RoomInfoPage extends BasePage {
     private String nickName;
 
     /**
+     * 房东头像
+     */
+    private String userPic;
+
+    /**
      * 配套设施
      */
     private String facilities;
@@ -109,9 +115,4 @@ public class RoomInfoPage extends BasePage {
 
     private BigDecimal topPrice;
     private BigDecimal bottomPrice;
-
-    /**
-     * 房东头像
-     */
-    private String userPic;
 }

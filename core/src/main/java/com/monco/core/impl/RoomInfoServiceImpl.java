@@ -68,12 +68,24 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
                             root.get("city").as(String.class),
                             roomInfoPage.getCity()));
                 }
-                /*// 户型
-                if (StringUtils.isNotBlank(roomInfoPage.getCity())) {
+                // 房间审核状态
+                if (roomInfoPage.getRoomStatus() != null) {
                     predicateList.add(criteriaBuilder.equal(
-                            root.get("city").as(String.class),
-                            roomInfoPage.getCity()));
-                }*/
+                            root.get("roomStatus").as(Integer.class),
+                            roomInfoPage.getRoomStatus()));
+                }
+                // 户型
+                if (StringUtils.isNotBlank(roomInfoPage.getRoomType())) {
+                    predicateList.add(criteriaBuilder.like(
+                            root.get("roomType").as(String.class),
+                            "%" + roomInfoPage.getRoomType() + "%"));
+                }
+                // 设施
+                if (StringUtils.isNotBlank(roomInfoPage.getFacilities())) {
+                    predicateList.add(criteriaBuilder.like(
+                            root.get("facilities").as(String.class),
+                            "%" + roomInfoPage.getFacilities() + "%"));
+                }
                 // 绑定登录用户
                 if (roomInfoPage.getUserId() != null) {
                     predicateList.add(criteriaBuilder.equal(

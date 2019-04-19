@@ -43,6 +43,11 @@ public class RoomOrderPage extends BasePage {
     private Integer stayDays;
 
     /**
+     * 离开时间
+     */
+    private Date leaveDate;
+
+    /**
      * 总花费
      */
     private BigDecimal cost;
