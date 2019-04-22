@@ -114,4 +114,9 @@ public class RoomInfoPage extends BasePage {
      * 房东头像
      */
     private String userPic;
+
+    /**
+     * 收藏的ids
+     */
+    private Long[] roomCollectionIds;
 }

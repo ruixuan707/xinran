@@ -1,6 +1,7 @@
 package com.monco.api;
 
 import com.monco.common.bean.ApiResult;
+import com.monco.common.bean.CommonUtils;
 import com.monco.common.bean.ConstantUtils;
 import com.monco.core.entity.HomeInfo;
 import com.monco.core.entity.RoomInfo;
@@ -14,12 +15,14 @@ import com.monco.core.service.HomeInfoService;
 import com.monco.core.service.RoomInfoService;
 import com.monco.core.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -110,6 +113,33 @@ public class RoomInfoController {
         return ApiResult.ok(pageResult);
     }
 
+    @GetMapping("user-collection")
+    public ApiResult userCollection(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
+                                    @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+                                    RoomInfoPage roomInfoPage, OrderQuery orderQuery) {
+        User user = UserManager.get();
+        List<Long> collectionList = new ArrayList<>();
+        List<RoomInfo> roomInfos = user.getRoomCollection();
+        if (CollectionUtils.isEmpty(roomInfos)) {
+            return ApiResult.ok();
+        }
+        for (RoomInfo roomInfo : roomInfos) {
+            collectionList.add(roomInfo.getId());
+        }
+        if (CollectionUtils.isNotEmpty(collectionList)) {
+            roomInfoPage.setRoomCollectionIds(CommonUtils.list2Array(collectionList));
+        }
+        Page<RoomInfo> result = roomInfoService.getRoomInfoList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomInfoPage);
+        List<RoomInfo> roomInfoList = result.getContent();
+        List<RoomInfoPage> roomInfoPageList = new ArrayList<>();
+        for (RoomInfo roomInfo : roomInfoList) {
+            RoomInfoPage page = new RoomInfoPage();
+            entityToPage(roomInfo, page);
+            roomInfoPageList.add(page);
+        }
+        PageResult pageResult = new PageResult(result.getPageable(), roomInfoPageList, result.getTotalElements());
+        return ApiResult.ok(pageResult);
+    }
 
     public void entityToPage(RoomInfo roomInfo, RoomInfoPage roomInfoPage) {
         BeanUtils.copyProperties(roomInfo, roomInfoPage);

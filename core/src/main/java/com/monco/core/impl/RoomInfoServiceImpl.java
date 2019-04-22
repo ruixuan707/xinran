@@ -5,6 +5,7 @@ import com.monco.core.dao.RoomInfoDao;
 import com.monco.core.entity.RoomInfo;
 import com.monco.core.page.RoomInfoPage;
 import com.monco.core.service.RoomInfoService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,12 +69,14 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
                             root.get("city").as(String.class),
                             roomInfoPage.getCity()));
                 }
-                /*// 户型
-                if (StringUtils.isNotBlank(roomInfoPage.getCity())) {
-                    predicateList.add(criteriaBuilder.equal(
-                            root.get("city").as(String.class),
-                            roomInfoPage.getCity()));
-                }*/
+                // 收藏列表
+                if (ArrayUtils.isNotEmpty(roomInfoPage.getRoomCollectionIds())) {
+                    CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("id"));
+                    for (Long id : roomInfoPage.getRoomCollectionIds()){
+                        in.value(id);
+                    }
+                    predicateList.add(in);
+                }
                 // 绑定登录用户
                 if (roomInfoPage.getUserId() != null) {
                     predicateList.add(criteriaBuilder.equal(

@@ -3,6 +3,7 @@ package com.monco.api;
 import com.monco.common.bean.ApiResult;
 import com.monco.common.bean.ConstantUtils;
 import com.monco.core.entity.User;
+import com.monco.core.manager.UserManager;
 import com.monco.core.page.PageResult;
 import com.monco.core.page.UserPage;
 import com.monco.core.query.OrderQuery;
@@ -69,6 +70,19 @@ public class UserController {
     public ApiResult delete(@RequestParam Long id) {
         User user = userService.find(id);
         user.setDataDelete(ConstantUtils.DELETE);
+        userService.save(user);
+        return ApiResult.ok();
+    }
+
+
+    @PutMapping("collection")
+    public ApiResult collection(@RequestBody UserPage userPage) {
+        User user = UserManager.get();
+        if (ArrayUtils.isNotEmpty(userPage.getRoomCollectionIds())) {
+            user.setRoomCollection(roomInfoService.findByIds(userPage.getRoomCollectionIds()));
+        } else {
+            user.setRoomCollection(new ArrayList<>());
+        }
         userService.save(user);
         return ApiResult.ok();
     }
