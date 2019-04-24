@@ -35,11 +35,11 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
     /**
      * 状态标志位  0:停用 1:正常
      */
-    private Integer dataStatus = 1;
+    private Integer dataStatus;
     /**
      * 删除标志位  0:正常 1:删除
      */
-    private Integer dataDelete = 0;
+    private Integer dataDelete;
     /**
      * 创建人ID
      */

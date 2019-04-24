@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,10 +22,11 @@ import java.util.List;
  */
 @Slf4j
 @RestController
+@Scope("prototype")
 @RequestMapping("file")
 public class FileController {
 
-    private static final String[] imageFormat = {"bmp", "jpg", "png"};
+    private static final String[] imageFormat = {"bmp", "jpg", "png", "gif"};
 
     @Autowired
     private FastFileStorageService fastFileStorageService;
@@ -37,7 +39,7 @@ public class FileController {
             for (MultipartFile multipartFile : file) {
                 String fileName = multipartFile.getOriginalFilename();
                 if (!imageFormats.contains(StringUtils.substringAfterLast(fileName, "."))) {
-                    throw new RuntimeException(fileName + "图片格式不正确");
+                    return ApiResult.error("图片格式不正确");
                 }
             }
             for (MultipartFile multipartFile : file) {

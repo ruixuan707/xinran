@@ -73,4 +73,11 @@ public class RoomOrderPage extends BasePage {
      */
     private List<String> userListName;
     private Long[] userListId;
+
+    /**
+     * 房屋图片
+     */
+    private String roomPic;
+
+
 }

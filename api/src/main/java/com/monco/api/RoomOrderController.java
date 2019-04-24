@@ -130,6 +130,7 @@ public class RoomOrderController {
         if (roomOrder.getRoomInfo() != null) {
             roomOrderPage.setRoomInfoId(roomOrder.getRoomInfo().getId());
             roomOrderPage.setRoomInfoName(roomOrder.getRoomInfo().getRoomName());
+            roomOrderPage.setRoomPic(roomOrder.getRoomInfo().getPic());
         }
         if (CollectionUtils.isNotEmpty(roomOrder.getUserList())) {
             List<String> userList = new ArrayList<>();
