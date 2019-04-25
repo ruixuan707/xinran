@@ -2,6 +2,7 @@ package com.monco.api;
 
 import com.monco.common.bean.ApiResult;
 import com.monco.core.entity.OrderEvaluate;
+import com.monco.core.entity.RoomOrder;
 import com.monco.core.page.HomeInfoPage;
 import com.monco.core.page.OrderEvaluatePage;
 import com.monco.core.page.PageResult;
@@ -10,10 +11,14 @@ import com.monco.core.service.OrderEvaluateService;
 import com.monco.core.service.RoomOrderService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.aspectj.weaver.ast.Or;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,6 +48,16 @@ public class OrderEvaluateController {
         return ApiResult.ok();
     }
 
+    @PutMapping
+    public ApiResult update(@RequestBody OrderEvaluatePage orderEvaluatePage) {
+        OrderEvaluate orderEvaluate = orderEvaluateService.find(orderEvaluatePage.getId());
+        if (StringUtils.isNotBlank(orderEvaluatePage.getReply())) {
+            orderEvaluate.setReply(orderEvaluatePage.getReply());
+            orderEvaluateService.save(orderEvaluate);
+        }
+        return ApiResult.ok();
+    }
+
     @GetMapping
     public ApiResult getOne(@RequestParam Long id) {
         OrderEvaluatePage orderEvaluatePage = new OrderEvaluatePage();
@@ -65,6 +80,23 @@ public class OrderEvaluateController {
         }
         PageResult pageResult = new PageResult(result.getPageable(), orderEvaluatePageList, result.getTotalElements());
         return ApiResult.ok(pageResult);
+    }
+
+    @GetMapping("all")
+    public ApiResult all(@RequestParam Long id) {
+        RoomOrder roomOrder = roomOrderService.find(id);
+        OrderEvaluate orderEvaluate = new OrderEvaluate();
+        orderEvaluate.setRoomOrder(roomOrder);
+        Example<OrderEvaluate> roomOrderExample = Example.of(orderEvaluate);
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        List<OrderEvaluate> orderEvaluateList = orderEvaluateService.findAll(roomOrderExample, sort);
+        List<OrderEvaluatePage> orderEvaluatePageList = new ArrayList<>();
+        for (OrderEvaluate evaluate : orderEvaluateList) {
+            OrderEvaluatePage orderEvaluatePage = new OrderEvaluatePage();
+            entityToPage(evaluate, orderEvaluatePage);
+            orderEvaluatePageList.add(orderEvaluatePage);
+        }
+        return ApiResult.ok(orderEvaluatePageList);
     }
 
     public void entityToPage(OrderEvaluate orderEvaluate, OrderEvaluatePage orderEvaluatePage) {

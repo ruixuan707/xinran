@@ -84,10 +84,46 @@ public class RoomOrderController {
         return ApiResult.ok();
     }
 
+    /**
+     * 用户自己的所有订单
+     *
+     * @param currentPage
+     * @param pageSize
+     * @param roomOrderPage
+     * @param orderQuery
+     * @return
+     */
     @GetMapping("list")
     public ApiResult list(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                           @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                           RoomOrderPage roomOrderPage, OrderQuery orderQuery) {
+        roomOrderPage.setUserId(UserManager.get().getId());
+        Page<RoomOrder> result = roomOrderService.getRoomOrderList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomOrderPage);
+        List<RoomOrder> roomOrderList = result.getContent();
+        List<RoomOrderPage> roomOrderPageList = new ArrayList<>();
+        for (RoomOrder roomOrder : roomOrderList) {
+            RoomOrderPage page = new RoomOrderPage();
+            entityToPage(roomOrder, page);
+            roomOrderPageList.add(page);
+        }
+        PageResult pageResult = new PageResult(result.getPageable(), roomOrderPageList, result.getTotalElements());
+        return ApiResult.ok(pageResult);
+    }
+
+    /**
+     * 房东自己房子的所有订单
+     *
+     * @param currentPage
+     * @param pageSize
+     * @param roomOrderPage
+     * @param orderQuery
+     * @return
+     */
+    @GetMapping("user-list")
+    public ApiResult userList(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
+                              @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+                              RoomOrderPage roomOrderPage, OrderQuery orderQuery) {
+        roomOrderPage.setRoomUserId(UserManager.get().getId());
         Page<RoomOrder> result = roomOrderService.getRoomOrderList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomOrderPage);
         List<RoomOrder> roomOrderList = result.getContent();
         List<RoomOrderPage> roomOrderPageList = new ArrayList<>();
@@ -131,6 +167,7 @@ public class RoomOrderController {
             roomOrderPage.setRoomInfoId(roomOrder.getRoomInfo().getId());
             roomOrderPage.setRoomInfoName(roomOrder.getRoomInfo().getRoomName());
             roomOrderPage.setRoomPic(roomOrder.getRoomInfo().getPic());
+            roomOrderPage.setRentType(roomOrder.getRoomInfo().getRentType());
         }
         if (CollectionUtils.isNotEmpty(roomOrder.getUserList())) {
             List<String> userList = new ArrayList<>();

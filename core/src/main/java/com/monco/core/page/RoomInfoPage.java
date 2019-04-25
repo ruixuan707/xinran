@@ -119,4 +119,19 @@ public class RoomInfoPage extends BasePage {
      * 收藏的ids
      */
     private Long[] roomCollectionIds;
+
+    /**
+     * 用户手机号
+     */
+    private String userPhone;
+
+    /**
+     * 平均评分
+     */
+    private Double score;
+
+    /**
+     * 是否推荐展示 0 否 1 是
+     */
+    private Integer recommend;
 }

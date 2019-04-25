@@ -22,7 +22,6 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@Scope("prototype")
 @RequestMapping("file")
 public class FileController {
 

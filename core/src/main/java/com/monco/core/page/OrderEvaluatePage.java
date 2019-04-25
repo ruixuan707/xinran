@@ -27,4 +27,9 @@ public class OrderEvaluatePage extends BasePage {
      * 上传截图
      */
     private String pic;
+
+    /**
+     * 房东回复
+     */
+    private String reply;
 }

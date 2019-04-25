@@ -100,6 +100,11 @@ public class RoomInfo extends BaseEntity<Long> {
      */
     private HomeInfo homeInfo;
 
+    /**
+     * 是否推荐展示 0 否 1 是
+     */
+    private Integer recommend;
+
     @OneToOne
     @JoinColumn(name = "home_info_id", referencedColumnName = "id")
     public HomeInfo getHomeInfo() {

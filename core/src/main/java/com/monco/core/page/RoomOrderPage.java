@@ -79,5 +79,13 @@ public class RoomOrderPage extends BasePage {
      */
     private String roomPic;
 
+    /**
+     * 出租类型
+     */
+    private Integer rentType;
 
+    /**
+     * 房东id
+     */
+    private Long roomUserId;
 }

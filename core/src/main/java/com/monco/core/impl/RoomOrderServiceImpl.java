@@ -36,6 +36,27 @@ public class RoomOrderServiceImpl extends BaseServiceImpl<RoomOrder, Long> imple
             @Override
             public Predicate toPredicate(Root<RoomOrder> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
+                /**
+                 * 房屋出租状态
+                 */
+                if (roomOrderPage.getOrderStatus() != null) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("orderStatus").as(Integer.class), roomOrderPage.getOrderStatus()));
+                }
+                /**
+                 * 用户订单
+                 */
+                if (roomOrderPage.getUserId() != null) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("user").get("id").as(Long.class), roomOrderPage.getUserId()));
+                }
+                /**
+                 * 房东订单
+                 */
+                if (roomOrderPage.getRoomUserId() != null) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("roomInfo").get("user").get("id").as(Long.class), roomOrderPage.getRoomUserId()));
+                }
                 predicateList.add(criteriaBuilder.equal(
                         root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];
