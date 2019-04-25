@@ -32,4 +32,19 @@ public class OrderEvaluatePage extends BasePage {
      * 房东回复
      */
     private String reply;
+
+    /**
+     * 房间id
+     */
+    private Long roomInfoId;
+
+    /**
+     * 查询订单ids
+     */
+    private Long[] roomOrderIds;
+
+    /**
+     * 房客头像
+     */
+    private String userPic;
 }

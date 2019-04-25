@@ -5,6 +5,7 @@ import com.monco.core.dao.OrderEvaluateDao;
 import com.monco.core.entity.OrderEvaluate;
 import com.monco.core.page.OrderEvaluatePage;
 import com.monco.core.service.OrderEvaluateService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,14 @@ public class OrderEvaluateServiceImpl extends BaseServiceImpl<OrderEvaluate, Lon
             @Override
             public Predicate toPredicate(Root<OrderEvaluate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
+                // 评价
+                if (ArrayUtils.isNotEmpty(orderEvaluatePage.getRoomOrderIds())) {
+                    CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("roomOrder").get("id"));
+                    for (Long id : orderEvaluatePage.getRoomOrderIds()) {
+                        in.value(id);
+                    }
+                    predicateList.add(in);
+                }
                 predicateList.add(criteriaBuilder.equal(
                         root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];

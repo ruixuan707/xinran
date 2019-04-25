@@ -12,6 +12,13 @@ import org.springframework.data.domain.Pageable;
  */
 public interface OrderEvaluateService extends BaseService<OrderEvaluate, Long> {
 
+    /**
+     * 订单评价分页查询
+     *
+     * @param pageable
+     * @param orderEvaluatePage
+     * @return
+     */
     Page<OrderEvaluate> getOrderEvaluateList(Pageable pageable, OrderEvaluatePage orderEvaluatePage);
 
 }

@@ -21,4 +21,5 @@ public interface RoomInfoService extends BaseService<RoomInfo, Long> {
      */
     Page<RoomInfo> getRoomInfoList(Pageable pageable, RoomInfoPage roomInfoPage);
 
+
 }

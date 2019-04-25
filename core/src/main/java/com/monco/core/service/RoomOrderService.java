@@ -1,9 +1,12 @@
 package com.monco.core.service;
 
+import com.monco.core.entity.RoomInfo;
 import com.monco.core.entity.RoomOrder;
 import com.monco.core.page.RoomOrderPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * @Auther: monco
@@ -20,4 +23,20 @@ public interface RoomOrderService extends BaseService<RoomOrder, Long> {
      * @return
      */
     Page<RoomOrder> getRoomOrderList(Pageable pageable, RoomOrderPage roomOrderPage);
+
+    /**
+     * 根据房间id获取房间订单
+     *
+     * @param roomInfoId
+     * @return
+     */
+    List<RoomOrder> getRoomOrderList(Long roomInfoId);
+
+
+    /**
+     * 订单评分
+     *
+     * @param roomOrder
+     */
+    void setScore(RoomOrder roomOrder);
 }

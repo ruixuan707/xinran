@@ -134,4 +134,9 @@ public class RoomInfoPage extends BasePage {
      * 是否推荐展示 0 否 1 是
      */
     private Integer recommend;
+
+    /**
+     * 点评数量
+     */
+    private Integer evaluateNumber;
 }

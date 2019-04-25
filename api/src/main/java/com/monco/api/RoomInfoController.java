@@ -163,7 +163,9 @@ public class RoomInfoController {
             roomInfoPage.setUserPic(roomInfo.getUser().getPic());
             roomInfoPage.setUserPhone(roomInfo.getUser().getPhoneCode());
         }
-        RoomOrder roomOrder = new RoomOrder();
+        List<RoomOrder> roomOrderList = roomOrderService.getRoomOrderList(roomInfo.getId());
+        roomInfoPage.setEvaluateNumber(roomOrderList.size());
+        /*RoomOrder roomOrder = new RoomOrder();
         roomOrder.setRoomInfo(roomInfo);
         Example<RoomOrder> roomInfoExample = Example.of(roomOrder);
         List<RoomOrder> roomOrderList = roomOrderService.findAll(roomInfoExample, Sort.by("id"));
@@ -178,7 +180,7 @@ public class RoomInfoController {
         if (size != 0) {
             score = total / size;
         }
-        roomInfoPage.setScore(score);
+        roomInfoPage.setScore(score);*/
     }
 
     public void pageToEntity(RoomInfoPage roomInfoPage, RoomInfo roomInfo) {

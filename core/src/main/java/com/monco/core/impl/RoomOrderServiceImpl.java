@@ -2,15 +2,20 @@ package com.monco.core.impl;
 
 import com.monco.common.bean.ConstantUtils;
 import com.monco.core.dao.RoomOrderDao;
+import com.monco.core.entity.RoomInfo;
 import com.monco.core.entity.RoomOrder;
 import com.monco.core.page.RoomOrderPage;
 import com.monco.core.service.BaseService;
+import com.monco.core.service.RoomInfoService;
 import com.monco.core.service.RoomOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -29,6 +34,9 @@ public class RoomOrderServiceImpl extends BaseServiceImpl<RoomOrder, Long> imple
 
     @Autowired
     RoomOrderDao roomOrderDao;
+
+    @Autowired
+    RoomInfoService roomInfoService;
 
     @Override
     public Page<RoomOrder> getRoomOrderList(Pageable pageable, RoomOrderPage roomOrderPage) {
@@ -65,5 +73,28 @@ public class RoomOrderServiceImpl extends BaseServiceImpl<RoomOrder, Long> imple
             }
         }, pageable);
         return result;
+    }
+
+    @Override
+    public List<RoomOrder> getRoomOrderList(Long roomInfoId) {
+        RoomInfo roomInfo = roomInfoService.find(roomInfoId);
+        RoomOrder roomOrder = new RoomOrder();
+        roomOrder.setRoomInfo(roomInfo);
+        roomOrder.setDataDelete(ConstantUtils.UN_DELETE);
+        Example<RoomOrder> roomOrderExample = Example.of(roomOrder);
+        List<RoomOrder> roomOrderList = this.findAll(roomOrderExample, Sort.by("id"));
+        return roomOrderList;
+    }
+
+    @Override
+    @Transactional
+    public void setScore(RoomOrder roomOrder) {
+        this.save(roomOrder);
+        RoomInfo roomInfo = roomOrder.getRoomInfo();
+        List<RoomOrder> roomOrderList = this.getRoomOrderList(roomInfo.getId());
+        Double total = (roomOrderList.size() - 1) * roomInfo.getScore() + roomOrder.getScore();
+        Double score = total / roomOrderList.size();
+        roomInfo.setScore(score);
+        roomInfoService.save(roomInfo);
     }
 }
