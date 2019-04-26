@@ -162,6 +162,7 @@ public class RoomInfoController {
             roomInfoPage.setUserId(roomInfo.getUser().getId());
             roomInfoPage.setUserPic(roomInfo.getUser().getPic());
             roomInfoPage.setUserPhone(roomInfo.getUser().getPhoneCode());
+            roomInfoPage.setIdentityCode(roomInfo.getUser().getIdentityCode());
         }
         List<RoomOrder> roomOrderList = roomOrderService.getRoomOrderList(roomInfo.getId());
         roomInfoPage.setEvaluateNumber(roomOrderList.size());

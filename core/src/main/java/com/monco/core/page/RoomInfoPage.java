@@ -139,4 +139,9 @@ public class RoomInfoPage extends BasePage {
      * 点评数量
      */
     private Integer evaluateNumber;
+
+    /**
+     * 房东身份证
+     */
+    private String identityCode;;
 }

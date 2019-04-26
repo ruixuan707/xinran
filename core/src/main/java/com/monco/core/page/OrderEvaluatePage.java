@@ -3,6 +3,8 @@ package com.monco.core.page;
 import com.monco.core.entity.RoomOrder;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @Auther: monco
  * @Date: 2019/3/25 17:11
@@ -47,4 +49,19 @@ public class OrderEvaluatePage extends BasePage {
      * 房客头像
      */
     private String userPic;
+
+    /**
+     * 房客名称
+     */
+    private String userName;
+
+    /**
+     * 房客账号
+     */
+    private String userAccount;
+
+    /**
+     * 入住时间
+     */
+    private Date stayDate;
 }

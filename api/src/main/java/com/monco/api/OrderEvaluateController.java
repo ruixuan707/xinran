@@ -116,6 +116,9 @@ public class OrderEvaluateController {
             orderEvaluatePage.setRoomOrderId(orderEvaluate.getRoomOrder().getId());
             orderEvaluatePage.setRoomOrderName(orderEvaluate.getRoomOrder().getOrderCode());
             orderEvaluatePage.setUserPic(orderEvaluate.getRoomOrder().getUser().getPic());
+            orderEvaluatePage.setUserName(orderEvaluate.getRoomOrder().getUser().getNickName());
+            orderEvaluatePage.setUserAccount(orderEvaluate.getRoomOrder().getUser().getUsername());
+            orderEvaluatePage.setStayDate(orderEvaluate.getRoomOrder().getStayDate());
         }
     }
 
