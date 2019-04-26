@@ -32,11 +32,27 @@ public interface RoomOrderService extends BaseService<RoomOrder, Long> {
      */
     List<RoomOrder> getRoomOrderList(Long roomInfoId);
 
-
     /**
      * 订单评分
      *
      * @param roomOrder
      */
     void setScore(RoomOrder roomOrder);
+
+    /**
+     * 判断当前房子是否可以被预定
+     *
+     * @param roomOrderPage
+     * @return
+     */
+    boolean enableOrder(RoomOrderPage roomOrderPage);
+
+    /**
+     * 根据房间id和订单状态获取房间订单
+     *
+     * @param roomInfoId
+     * @return
+     */
+    List<RoomOrder> getRoomOrderList(Long roomInfoId, Integer orderStatus);
+
 }

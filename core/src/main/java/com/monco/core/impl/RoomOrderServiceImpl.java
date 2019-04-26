@@ -8,6 +8,7 @@ import com.monco.core.page.RoomOrderPage;
 import com.monco.core.service.BaseService;
 import com.monco.core.service.RoomInfoService;
 import com.monco.core.service.RoomOrderService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -91,10 +92,31 @@ public class RoomOrderServiceImpl extends BaseServiceImpl<RoomOrder, Long> imple
     public void setScore(RoomOrder roomOrder) {
         this.save(roomOrder);
         RoomInfo roomInfo = roomOrder.getRoomInfo();
-        List<RoomOrder> roomOrderList = this.getRoomOrderList(roomInfo.getId());
+        List<RoomOrder> roomOrderList = this.getRoomOrderList(roomInfo.getId(), ConstantUtils.NUM_3);
         Double total = (roomOrderList.size() - 1) * roomInfo.getScore() + roomOrder.getScore();
         Double score = total / roomOrderList.size();
         roomInfo.setScore(score);
         roomInfoService.save(roomInfo);
+    }
+
+    @Override
+    public boolean enableOrder(RoomOrderPage roomOrderPage) {
+        List<RoomOrder> roomOrderList = roomOrderDao.getEnableOrder(roomOrderPage.getRoomInfoId(), roomOrderPage.getStayDate(), roomOrderPage.getLeaveDate());
+        if (CollectionUtils.isEmpty(roomOrderList)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<RoomOrder> getRoomOrderList(Long roomInfoId, Integer orderStatus) {
+        RoomInfo roomInfo = roomInfoService.find(roomInfoId);
+        RoomOrder roomOrder = new RoomOrder();
+        roomOrder.setRoomInfo(roomInfo);
+        roomOrder.setDataDelete(ConstantUtils.UN_DELETE);
+        roomOrder.setOrderStatus(orderStatus);
+        Example<RoomOrder> roomOrderExample = Example.of(roomOrder);
+        List<RoomOrder> roomOrderList = this.findAll(roomOrderExample, Sort.by("id"));
+        return roomOrderList;
     }
 }

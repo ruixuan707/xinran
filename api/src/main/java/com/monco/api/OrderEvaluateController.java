@@ -92,6 +92,24 @@ public class OrderEvaluateController {
         return ApiResult.ok(pageResult);
     }
 
+
+    @GetMapping("home")
+    public ApiResult home(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
+                          @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+                          OrderEvaluatePage orderEvaluatePage, OrderQuery orderQuery) {
+        Page<OrderEvaluate> result = orderEvaluateService.getOrderEvaluateList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), orderEvaluatePage);
+        List<OrderEvaluate> orderEvaluateList = result.getContent();
+        List<OrderEvaluatePage> orderEvaluatePageList = new ArrayList<>();
+        for (OrderEvaluate orderEvaluate : orderEvaluateList) {
+            OrderEvaluatePage page = new OrderEvaluatePage();
+            entityToPage(orderEvaluate, page);
+            orderEvaluatePageList.add(page);
+        }
+        PageResult pageResult = new PageResult(result.getPageable(), orderEvaluatePageList, result.getTotalElements());
+        return ApiResult.ok(pageResult);
+    }
+
+
     @GetMapping("all")
     public ApiResult all(@RequestParam Long id) {
         RoomOrder roomOrder = roomOrderService.find(id);

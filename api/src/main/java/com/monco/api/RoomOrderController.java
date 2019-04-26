@@ -56,6 +56,10 @@ public class RoomOrderController {
         roomOrder.setUser(UserManager.get());
         roomOrder.setCostStatus(ConstantUtils.NUM_0);
         roomOrder.setOrderStatus(ConstantUtils.NUM_1);
+        boolean enableOrder = roomOrderService.enableOrder(roomOrderPage);
+        if (!enableOrder) {
+            return ApiResult.error("该时间段此房屋已经被预定！");
+        }
         roomOrderService.save(roomOrder);
         return ApiResult.ok();
     }
@@ -64,7 +68,11 @@ public class RoomOrderController {
     public ApiResult update(@RequestBody RoomOrderPage roomOrderPage) {
         RoomOrder roomOrder = new RoomOrder();
         pageToEntity(roomOrderPage, roomOrder);
-        roomOrderService.save(roomOrder);
+        if (roomOrderPage.getScore() != null) {
+            roomOrderService.setScore(roomOrder);
+        }else {
+            roomOrderService.save(roomOrder);
+        }
         return ApiResult.ok();
     }
 

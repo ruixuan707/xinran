@@ -58,6 +58,7 @@ public class RoomInfoController {
         pageToEntity(roomInfoPage, roomInfo);
         roomInfo.setRoomStatus(ConstantUtils.NUM_0);
         roomInfo.setRecommend(ConstantUtils.NUM_0);
+        roomInfo.setScore(0.00);
         roomInfoService.save(roomInfo);
         return ApiResult.ok();
     }
@@ -166,22 +167,6 @@ public class RoomInfoController {
         }
         List<RoomOrder> roomOrderList = roomOrderService.getRoomOrderList(roomInfo.getId());
         roomInfoPage.setEvaluateNumber(roomOrderList.size());
-        /*RoomOrder roomOrder = new RoomOrder();
-        roomOrder.setRoomInfo(roomInfo);
-        Example<RoomOrder> roomInfoExample = Example.of(roomOrder);
-        List<RoomOrder> roomOrderList = roomOrderService.findAll(roomInfoExample, Sort.by("id"));
-        Double total = 0.0;
-        Double score = 0.0;
-        int size = roomOrderList.size();
-        for (RoomOrder order : roomOrderList) {
-            if (order.getScore() != null) {
-                total = total + order.getScore();
-            }
-        }
-        if (size != 0) {
-            score = total / size;
-        }
-        roomInfoPage.setScore(score);*/
     }
 
     public void pageToEntity(RoomInfoPage roomInfoPage, RoomInfo roomInfo) {

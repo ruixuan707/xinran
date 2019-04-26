@@ -202,7 +202,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity<ID>, ID extends Seria
                 continue;
             }
             Object propertyValue = srcBean.getPropertyValue(propertyName);
-            if (!StringUtils.isEmpty(propertyValue)) {
+            if (propertyValue != null) {
                 properties.add(propertyName);
             }
         }
