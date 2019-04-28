@@ -1,3 +1,4 @@
+com\monco\api\RecommendController.class
 com\monco\api\RoomInfoController.class
 com\monco\shiro\JwtComponent.class
 com\monco\api\HomeInfoController.class

@@ -9,7 +9,9 @@ com\monco\core\service\OrderEvaluateService.class
 com\monco\core\page\RoomInfoPage.class
 com\monco\core\impl\RoomInfoServiceImpl$1.class
 com\monco\core\dao\RoomOrderDao.class
+com\monco\core\service\RecommendService.class
 com\monco\core\manager\UserManager.class
+com\monco\core\page\RecommendPage.class
 com\monco\core\service\BaseService.class
 com\monco\core\dao\RoomInfoDao.class
 com\monco\core\entity\BaseEntity.class
@@ -24,8 +26,10 @@ com\monco\core\impl\OrderInfoServiceImpl.class
 com\monco\core\page\PageResult.class
 com\monco\core\impl\RoomInfoServiceImpl.class
 com\monco\core\dao\BaseDao.class
+com\monco\core\dao\RecommendDao.class
 com\monco\core\page\HomeInfoPage.class
 com\monco\core\listener\EntityListener.class
+com\monco\core\entity\Recommend.class
 com\monco\core\impl\UserServiceImpl.class
 com\monco\core\impl\BaseServiceImpl.class
 com\monco\core\dao\OrderEvaluateDao.class
@@ -33,6 +37,7 @@ com\monco\core\query\OrderQuery.class
 com\monco\core\entity\OrderEvaluate.class
 com\monco\core\page\OrderEvaluatePage.class
 com\monco\core\entity\OrderInfo.class
+com\monco\core\impl\RecommendServiceImpl.class
 com\monco\core\impl\UserServiceImpl$1.class
 com\monco\core\dao\HomeInfoDao.class
 com\monco\core\entity\HomeInfo.class

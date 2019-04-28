@@ -89,7 +89,7 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
                 }
                 // 户型
                 if (ArrayUtils.isNotEmpty(roomInfoPage.getRoomTypes())) {
-                    for (String s : roomInfoPage.getFacilitiess()) {
+                    for (String s : roomInfoPage.getRoomTypes()) {
                         predicateList.add(criteriaBuilder.like(
                                 root.get("roomType").as(String.class),
                                 "%" + s + "%"));
