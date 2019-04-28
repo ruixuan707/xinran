@@ -8,8 +8,10 @@ import com.monco.core.service.RoomInfoService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -72,10 +74,26 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
                 // 收藏列表
                 if (ArrayUtils.isNotEmpty(roomInfoPage.getRoomCollectionIds())) {
                     CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("id"));
-                    for (Long id : roomInfoPage.getRoomCollectionIds()){
+                    for (Long id : roomInfoPage.getRoomCollectionIds()) {
                         in.value(id);
                     }
                     predicateList.add(in);
+                }
+                // 设施
+                if (ArrayUtils.isNotEmpty(roomInfoPage.getFacilitiess())) {
+                    for (String s : roomInfoPage.getFacilitiess()) {
+                        predicateList.add(criteriaBuilder.like(
+                                root.get("facilities").as(String.class),
+                                "%" + s + "%"));
+                    }
+                }
+                // 户型
+                if (ArrayUtils.isNotEmpty(roomInfoPage.getRoomTypes())) {
+                    for (String s : roomInfoPage.getFacilitiess()) {
+                        predicateList.add(criteriaBuilder.like(
+                                root.get("roomType").as(String.class),
+                                "%" + s + "%"));
+                    }
                 }
                 // 房间审核状态
                 if (roomInfoPage.getRoomStatus() != null) {
@@ -109,5 +127,15 @@ public class RoomInfoServiceImpl extends BaseServiceImpl<RoomInfo, Long> impleme
             }
         }, pageable);
         return result;
+    }
+
+    @Override
+    public List<RoomInfo> getRoomInfoListByCityName(String cityName) {
+        RoomInfo roomInfo = new RoomInfo();
+        roomInfo.setCity(cityName);
+        roomInfo.setDataDelete(ConstantUtils.UN_DELETE);
+        Example<RoomInfo> roomInfoExample = Example.of(roomInfo);
+        List<RoomInfo> roomInfoList = this.findAll(roomInfoExample, Sort.by("id"));
+        return roomInfoList;
     }
 }

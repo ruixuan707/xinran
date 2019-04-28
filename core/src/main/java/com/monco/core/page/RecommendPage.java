@@ -17,7 +17,7 @@ public class RecommendPage extends BasePage {
     /**
      * 类型 0 城市 1 房间
      */
-    private String type;
+    private Integer type;
 
     /**
      * 城市名称

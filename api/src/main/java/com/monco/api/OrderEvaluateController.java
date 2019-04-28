@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("order-evaluate")
+@RequestMapping("evaluate")
 public class OrderEvaluateController {
 
     @Autowired

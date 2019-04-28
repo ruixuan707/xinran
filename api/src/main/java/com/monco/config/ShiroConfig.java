@@ -55,9 +55,17 @@ public class ShiroConfig {
         /* 注册 **/
         filterRuleMap.put("/user/register**", "anon");
         /* 所有房源信息 **/
-        filterRuleMap.put("/room-info/list", "anon");
+        filterRuleMap.put("/room-info/**", "anon");
+        /* 评价 **/
+        filterRuleMap.put("/evaluate/**", "anon");
+        /* 首页 **/
+        filterRuleMap.put("/home-wheel/list", "anon");
+        /* 推荐 **/
+        filterRuleMap.put("/recommend/all", "anon");
         /* fastDFS上传 **/
         filterRuleMap.put("/file/uplfmdFileToFastList", "anon");
+        /* 用户 **/
+        filterRuleMap.put("/user/list", "anon");
         /* swagger **/
         filterRuleMap.put("/swagger-ui.html", "anon");
         filterRuleMap.put("/webjars/**", "anon");

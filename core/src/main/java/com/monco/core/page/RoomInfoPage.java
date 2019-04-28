@@ -143,5 +143,15 @@ public class RoomInfoPage extends BasePage {
     /**
      * 房东身份证
      */
-    private String identityCode;;
+    private String identityCode;
+
+    /**
+     * 户型ids
+     */
+    private String[] roomTypes;
+
+    /**
+     * 设置ids
+     */
+    private String[] facilitiess;
 }

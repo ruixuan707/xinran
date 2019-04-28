@@ -8,6 +8,7 @@ import com.monco.core.page.RecommendPage;
 import com.monco.core.service.RecommendService;
 import com.monco.core.service.RoomInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -32,11 +33,16 @@ public class RecommendController {
     public ApiResult save(@RequestBody List<RecommendPage> recommendPageList) {
         List<Recommend> recommendList = new ArrayList<>();
         for (RecommendPage recommendPage : recommendPageList) {
+            if (recommendPage == null) {
+                continue;
+            }
             Recommend recommend = new Recommend();
             BeanUtils.copyProperties(recommendPage, recommend);
             recommendList.add(recommend);
         }
-        recommendService.saveCollection(recommendList);
+        if (CollectionUtils.isNotEmpty(recommendList)) {
+            recommendService.saveCollection(recommendList);
+        }
         return ApiResult.ok();
     }
 
@@ -67,16 +73,20 @@ public class RecommendController {
         List<RecommendPage> recommendPageList = new ArrayList<>();
         for (Recommend recommend1 : recommendList) {
             RecommendPage recommendPage = new RecommendPage();
+            BeanUtils.copyProperties(recommend1, recommendPage);
+            recommendPage.setId(recommend1.getId());
             if (recommend1.getType() == 1) {
                 RoomInfo roomInfo = roomInfoService.find(recommend1.getRoomInfoId());
                 recommendPage.setPic(roomInfo.getPic());
                 recommendPage.setUserPic(roomInfo.getUser().getPic());
                 recommendPage.setRoomUserName(roomInfo.getUser().getNickName());
                 recommendPage.setPrice(roomInfo.getPrice());
+                recommendPage.setCityName(roomInfo.getCity());
             } else {
                 recommendPage.setPic(recommend1.getPic());
-                recommendPage.setCityName(recommend.getCityName());
-                recommendPage.setRoomCount(100);
+                recommendPage.setCityName(recommend1.getCityName());
+                List<RoomInfo> roomInfoList = roomInfoService.getRoomInfoListByCityName(recommend1.getCityName());
+                recommendPage.setRoomCount(roomInfoList.size());
             }
             recommendPageList.add(recommendPage);
         }

@@ -18,6 +18,7 @@ import com.monco.core.service.RoomOrderService;
 import com.monco.core.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -91,6 +92,12 @@ public class RoomInfoController {
     public ApiResult list(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                           @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                           RoomInfoPage roomInfoPage, OrderQuery orderQuery) {
+        if (StringUtils.isNotBlank(roomInfoPage.getRoomType())) {
+            roomInfoPage.setRoomTypes(roomInfoPage.getRoomType().split(","));
+        }
+        if (StringUtils.isNotBlank(roomInfoPage.getFacilities())) {
+            roomInfoPage.setFacilitiess(roomInfoPage.getFacilities().split(","));
+        }
         Page<RoomInfo> result = roomInfoService.getRoomInfoList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomInfoPage);
         List<RoomInfo> roomInfoList = result.getContent();
         List<RoomInfoPage> roomInfoPageList = new ArrayList<>();
@@ -110,6 +117,12 @@ public class RoomInfoController {
         User user = UserManager.get();
         if (user != null) {
             roomInfoPage.setUserId(user.getId());
+        }
+        if (StringUtils.isNotBlank(roomInfoPage.getRoomType())) {
+            roomInfoPage.setRoomTypes(roomInfoPage.getRoomType().split(","));
+        }
+        if (StringUtils.isNotBlank(roomInfoPage.getFacilities())) {
+            roomInfoPage.setFacilitiess(roomInfoPage.getFacilities().split(","));
         }
         Page<RoomInfo> result = roomInfoService.getRoomInfoList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomInfoPage);
         List<RoomInfo> roomInfoList = result.getContent();
@@ -138,6 +151,12 @@ public class RoomInfoController {
         }
         if (CollectionUtils.isNotEmpty(collectionList)) {
             roomInfoPage.setRoomCollectionIds(CommonUtils.list2Array(collectionList));
+        }
+        if (StringUtils.isNotBlank(roomInfoPage.getRoomType())) {
+            roomInfoPage.setRoomTypes(roomInfoPage.getRoomType().split(","));
+        }
+        if (StringUtils.isNotBlank(roomInfoPage.getFacilities())) {
+            roomInfoPage.setFacilitiess(roomInfoPage.getFacilities().split(","));
         }
         Page<RoomInfo> result = roomInfoService.getRoomInfoList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomInfoPage);
         List<RoomInfo> roomInfoList = result.getContent();
