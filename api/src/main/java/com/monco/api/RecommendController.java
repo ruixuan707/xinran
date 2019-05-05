@@ -57,14 +57,14 @@ public class RecommendController {
 
 
     @DeleteMapping
-    public ApiResult update(@RequestParam Long id) {
+    public ApiResult delete(@RequestParam Long id) {
         Recommend recommend = recommendService.find(id);
         recommend.setDataDelete(ConstantUtils.DELETE);
         recommendService.save(recommend);
         return ApiResult.ok();
     }
 
-    @GetMapping("all")
+    @GetMapping("home")
     public ApiResult get() {
         Recommend recommend = new Recommend();
         recommend.setDataDelete(ConstantUtils.UN_DELETE);
@@ -74,6 +74,7 @@ public class RecommendController {
         for (Recommend recommend1 : recommendList) {
             RecommendPage recommendPage = new RecommendPage();
             BeanUtils.copyProperties(recommend1, recommendPage);
+            recommendPage.setType(recommend1.getType());
             recommendPage.setId(recommend1.getId());
             if (recommend1.getType() == 1) {
                 RoomInfo roomInfo = roomInfoService.find(recommend1.getRoomInfoId());

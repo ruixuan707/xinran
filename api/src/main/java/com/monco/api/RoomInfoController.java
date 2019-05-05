@@ -64,7 +64,7 @@ public class RoomInfoController {
         return ApiResult.ok();
     }
 
-    @GetMapping
+    @GetMapping("detail")
     public ApiResult getOne(@RequestParam Long id) {
         RoomInfoPage roomInfoPage = new RoomInfoPage();
         RoomInfo roomInfo = roomInfoService.find(id);
@@ -84,6 +84,14 @@ public class RoomInfoController {
     public ApiResult save(@RequestParam Long id) {
         RoomInfo roomInfo = roomInfoService.find(id);
         roomInfo.setDataDelete(ConstantUtils.DELETE);
+        roomInfoService.save(roomInfo);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("examine")
+    public ApiResult examine(@RequestBody RoomInfoPage roomInfoPage) {
+        RoomInfo roomInfo = roomInfoService.find(roomInfoPage.getId());
+        roomInfo.setRoomStatus(roomInfoPage.getRoomStatus());
         roomInfoService.save(roomInfo);
         return ApiResult.ok();
     }
@@ -110,6 +118,15 @@ public class RoomInfoController {
         return ApiResult.ok(pageResult);
     }
 
+    /**
+     * 房东的房子列表
+     *
+     * @param currentPage
+     * @param pageSize
+     * @param roomInfoPage
+     * @param orderQuery
+     * @return
+     */
     @GetMapping("user-list")
     public ApiResult userList(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                               @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
@@ -117,6 +134,8 @@ public class RoomInfoController {
         User user = UserManager.get();
         if (user != null) {
             roomInfoPage.setUserId(user.getId());
+        } else {
+            return ApiResult.error("您暂未登录！");
         }
         if (StringUtils.isNotBlank(roomInfoPage.getRoomType())) {
             roomInfoPage.setRoomTypes(roomInfoPage.getRoomType().split(","));
@@ -136,6 +155,15 @@ public class RoomInfoController {
         return ApiResult.ok(pageResult);
     }
 
+    /**
+     * 用户收藏
+     *
+     * @param currentPage
+     * @param pageSize
+     * @param roomInfoPage
+     * @param orderQuery
+     * @return
+     */
     @GetMapping("user-collection")
     public ApiResult userCollection(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                                     @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,

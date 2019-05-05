@@ -3,6 +3,7 @@ package com.monco.core.impl;
 import com.monco.common.bean.ConstantUtils;
 import com.monco.core.dao.UserDiaryDao;
 import com.monco.core.entity.UserDiary;
+import com.monco.core.manager.UserManager;
 import com.monco.core.service.UserDiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,10 @@ public class UserDiaryServiceImpl extends BaseServiceImpl<UserDiary, Long> imple
             @Override
             public Predicate toPredicate(Root<UserDiary> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
+                if (UserManager.get() != null) {
+                    predicateList.add(criteriaBuilder.equal(
+                            root.get("user").get("id").as(Long.class), UserManager.get().getId()));
+                }
                 predicateList.add(criteriaBuilder.equal(
                         root.get("dataDelete").as(Integer.class), ConstantUtils.UN_DELETE));
                 Predicate[] predicates = new Predicate[predicateList.size()];

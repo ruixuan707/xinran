@@ -70,7 +70,7 @@ public class RoomOrderController {
         pageToEntity(roomOrderPage, roomOrder);
         if (roomOrderPage.getScore() != null) {
             roomOrderService.setScore(roomOrder);
-        }else {
+        } else {
             roomOrderService.save(roomOrder);
         }
         return ApiResult.ok();
@@ -105,7 +105,11 @@ public class RoomOrderController {
     public ApiResult list(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                           @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                           RoomOrderPage roomOrderPage, OrderQuery orderQuery) {
-        roomOrderPage.setUserId(UserManager.get().getId());
+        if (UserManager.get() != null) {
+            roomOrderPage.setUserId(UserManager.get().getId());
+        } else {
+            return ApiResult.error("您暂未登录");
+        }
         Page<RoomOrder> result = roomOrderService.getRoomOrderList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomOrderPage);
         List<RoomOrder> roomOrderList = result.getContent();
         List<RoomOrderPage> roomOrderPageList = new ArrayList<>();
@@ -131,7 +135,11 @@ public class RoomOrderController {
     public ApiResult userList(@RequestParam(value = "currentPage", defaultValue = "0") Integer currentPage,
                               @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                               RoomOrderPage roomOrderPage, OrderQuery orderQuery) {
-        roomOrderPage.setRoomUserId(UserManager.get().getId());
+        if (UserManager.get() != null) {
+            roomOrderPage.setRoomUserId(UserManager.get().getId());
+        } else {
+            return ApiResult.error("您暂未登录");
+        }
         Page<RoomOrder> result = roomOrderService.getRoomOrderList(OrderQuery.getQuery(orderQuery, currentPage, pageSize), roomOrderPage);
         List<RoomOrder> roomOrderList = result.getContent();
         List<RoomOrderPage> roomOrderPageList = new ArrayList<>();

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -45,7 +46,7 @@ public class ShiroConfig {
         filterMap.put("jwtToken", new JwtTokenFilter());
         factoryBean.setFilters(filterMap);
         factoryBean.setSecurityManager(defaultWebSecurityManager);
-        Map<String, String> filterRuleMap = new HashMap<>();
+        LinkedHashMap<String, String> filterRuleMap = new LinkedHashMap<>();
         /* 登录接口 **/
         filterRuleMap.put("/login", "anon");
         /* 下载 **/
@@ -53,19 +54,53 @@ public class ShiroConfig {
         /* 连接池 **/
         filterRuleMap.put("/druid/**", "anon");
         /* 注册 **/
-        filterRuleMap.put("/user/register**", "anon");
+        filterRuleMap.put("/user/register", "anon");
         /* 所有房源信息 **/
-        filterRuleMap.put("/room-info/**", "anon");
+        filterRuleMap.put("/room-info/list", "anon");
+        /* 房源详细 **/
+        filterRuleMap.put("/room-info/detail", "anon");
         /* 评价 **/
-        filterRuleMap.put("/evaluate/**", "anon");
+        filterRuleMap.put("/evaluate/list", "anon");
+        /* 所有评价 **/
+        filterRuleMap.put("/evaluate/home", "anon");
         /* 首页 **/
         filterRuleMap.put("/home-wheel/list", "anon");
         /* 推荐 **/
-        filterRuleMap.put("/recommend/all", "anon");
+        filterRuleMap.put("/recommend/home", "anon");
+        /* 房东日志 **/
+        filterRuleMap.put("/diary/home", "anon");
         /* fastDFS上传 **/
         filterRuleMap.put("/file/uplfmdFileToFastList", "anon");
         /* 用户 **/
         filterRuleMap.put("/user/list", "anon");
+
+        /* 登录接口 **/
+        filterRuleMap.put("api/login", "anon");
+        /* 下载 **/
+        filterRuleMap.put("api/download", "anon");
+        /* 连接池 **/
+        filterRuleMap.put("api/druid/**", "anon");
+        /* 注册 **/
+        filterRuleMap.put("api/user/register", "anon");
+        /* 所有房源信息 **/
+        filterRuleMap.put("api/room-info/list", "anon");
+        /* 房源详细 **/
+        filterRuleMap.put("api/room-info/detail", "anon");
+        /* 评价 **/
+        filterRuleMap.put("api/evaluate/list", "anon");
+        /* 所有评价 **/
+        filterRuleMap.put("api/evaluate/home", "anon");
+        /* 首页 **/
+        filterRuleMap.put("api/home-wheel/list", "anon");
+        /* 推荐 **/
+        filterRuleMap.put("api/recommend/home", "anon");
+        /* 房东日志 **/
+        filterRuleMap.put("api/diary/home", "anon");
+        /* fastDFS上传 **/
+        filterRuleMap.put("api/file/uplfmdFileToFastList", "anon");
+        /* 用户 **/
+        filterRuleMap.put("api/user/list", "anon");
+
         /* swagger **/
         filterRuleMap.put("/swagger-ui.html", "anon");
         filterRuleMap.put("/webjars/**", "anon");
