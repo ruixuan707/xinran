@@ -79,8 +79,10 @@ public class RecommendController {
             if (recommend1.getType() == 1) {
                 RoomInfo roomInfo = roomInfoService.find(recommend1.getRoomInfoId());
                 recommendPage.setPic(roomInfo.getPic());
-                recommendPage.setUserPic(roomInfo.getUser().getPic());
-                recommendPage.setRoomUserName(roomInfo.getUser().getNickName());
+                if (roomInfo.getUser() != null) {
+                    recommendPage.setUserPic(roomInfo.getUser().getPic());
+                    recommendPage.setRoomUserName(roomInfo.getUser().getNickName());
+                }
                 recommendPage.setPrice(roomInfo.getPrice());
                 recommendPage.setCityName(roomInfo.getCity());
             } else {

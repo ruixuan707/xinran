@@ -55,11 +55,17 @@ public class RoomInfoController {
 
     @PostMapping
     public ApiResult save(@RequestBody RoomInfoPage roomInfoPage) {
+        // 初始化一个需要保存的对象
         RoomInfo roomInfo = new RoomInfo();
+        // 将前端传递来的page对象转为需要保存的对象
         pageToEntity(roomInfoPage, roomInfo);
+        // 设置新增的房屋为未审核
         roomInfo.setRoomStatus(ConstantUtils.NUM_0);
+        // 设置新增的房屋为不推荐首页
         roomInfo.setRecommend(ConstantUtils.NUM_0);
+        // 设置新增的房屋的评分为0
         roomInfo.setScore(0.00);
+        // 保存房屋对象 roomInfo
         roomInfoService.save(roomInfo);
         return ApiResult.ok();
     }
@@ -172,7 +178,7 @@ public class RoomInfoController {
         List<Long> collectionList = new ArrayList<>();
         List<RoomInfo> roomInfos = user.getRoomCollection();
         if (CollectionUtils.isEmpty(roomInfos)) {
-            return ApiResult.ok();
+            collectionList.add(0L);
         }
         for (RoomInfo roomInfo : roomInfos) {
             collectionList.add(roomInfo.getId());

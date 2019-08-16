@@ -30,22 +30,46 @@ import java.util.*;
  */
 public abstract class BaseServiceImpl<T extends BaseEntity<ID>, ID extends Serializable> implements BaseService<T, ID> {
 
+    /**
+     * 注入 EntityManager
+     */
     @PersistenceContext
     protected EntityManager entityManager;
 
     @Autowired
     protected BaseDao<T, ID> baseDao;
 
+    /**
+     * 通用保存方法
+     * JPA采用的是 实体绑定存储原则  我们只要向EntityManager 容器中加入响应的实体  通过entityManager可以对这个实体进行增删改查
+     * EntityManager 默认提供好多种方法
+     * persist 保存
+     * merge 修改
+     * find 查询
+     * remove 删除
+     *
+     * @param entity
+     * @return
+     */
     @Override
     @Transactional
     public T save(T entity) {
         Assert.notNull(entity, "Entity is not empty");
+        // 声明泛型
         Optional<T> optional;
+        // 如果获得entity实体的id 为空 则为添加
         if (Objects.isNull(entity.getId())) {
             optional = Optional.empty();
-        } else {
+        }
+        // 如果获得entity实体的id 不为空 则将此实体从数据库中查出来
+        else {
             optional = baseDao.findById(entity.getId());
         }
+        /**
+         * Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
+         * Optional 是个容器：它可以保存类型T的值，或者仅仅保存null。Optional提供很多有用的方法，这样我们就不用显式进行空值检测。
+         * Optional 类的引入很好的解决空指针异常。
+         */
         if (!optional.isPresent()) {
             entityManager.persist(entity);
             return entity;
