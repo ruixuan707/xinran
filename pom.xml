@@ -43,7 +43,7 @@
         <swagger2.version>2.7.0</swagger2.version>
         <jpush.version>3.3.2</jpush.version>
         <gson.verison>2.3</gson.verison>
-        <shiro.spring.version>1.3.2</shiro.spring.version>
+        <shiro.spring.version>1.7.0</shiro.spring.version>
         <com.auth0.version>3.4.0</com.auth0.version>
     </properties>
 
