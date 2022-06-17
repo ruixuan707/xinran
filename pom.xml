@@ -36,7 +36,7 @@
         <druid.version>1.1.10</druid.version>
         <commons.bean.utils.version>1.9.3</commons.bean.utils.version>
         <hibernate.validator.version>5.3.6.Final</hibernate.validator.version>
-        <com.alibaba.fastjson.version>1.2.49</com.alibaba.fastjson.version>
+        <com.alibaba.fastjson.version>1.2.83</com.alibaba.fastjson.version>
         <easypoi.version>3.0.3</easypoi.version>
         <commons.csv.version>1.5</commons.csv.version>
         <fastdfs.version>1.26.2</fastdfs.version>
